@@ -82,8 +82,12 @@ wss.on('connection', function connection(ws) {
    //     }
 
   //  }, 1000 / 24);
-    setInterval(function () {
-        ws.send('AUTH 7 ');
-    }, 1000);
+    wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+                setInterval(function () {
+                    ws.send('AUTH 7 ');
+                }, 8000);
+            }
+        });
     console.log('Connected', ws.url);
 });
