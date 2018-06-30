@@ -49,12 +49,12 @@ wss.on('connection', function connection(ws) {
     });
 
     ws.on('close', function () {
-        console.log('close connection ' + id);
-        delete clients[id];
+       // console.log('close connection ' + id);
+        //delete clients[id];
     });
     ws.on('error', function () {
-        console.log('error connection ' + id);
-        delete clients[id];
+      //  console.log('error connection ' + id);
+       // delete clients[id];
     });
 
     console.log('Connected', ws.url);
