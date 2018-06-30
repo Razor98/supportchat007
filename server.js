@@ -9,8 +9,7 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var clientst = [];
-var clients = ('');
+var clients = [];
 
 const COMMANDS = {
     eino: 'non'
@@ -18,8 +17,8 @@ const COMMANDS = {
 
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-    if (clientst.indexOf(id) == -1) {
-        clients[id] = ws;
+    if (clients.indexOf(id) == -1) {
+        clients.push(ws);
         ws.send('AUTH_OK ' + id);
         console.log("new connection " + id);
         } else {
