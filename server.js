@@ -25,12 +25,8 @@ wss.broadcast = function broadcast(data) {
     });
 };
 wss.on('connection', function connection(ws) {
-    wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send('AUTH 0');
-            console.log("new connection " + ws.id);
-        }
-    }
+    ws.send('AUTH 0');
+    console.log("new connection " + ws.id);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -46,7 +42,8 @@ wss.on('connection', function connection(ws) {
         console.log('message ' + message);
       //  users[message.userName] = ws;
         info = message;
-        users[message.userName] = ws;
+        users[message] = ws;
+        message.send('AUTH 1');
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
 //                client.send(info);
