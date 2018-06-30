@@ -19,12 +19,13 @@ const COMMANDS = {
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     clients.push(ws);
-    if (clients.indexOf(id) == -1) {
-        ws.send('AUTH_OK ' + id);
-        console.log("new connection " + id);
-   } else {
-        ws.send('AUTH_CLOSE ' + id);  
-        }//если айди совпадают
+    ws.send('AUTH_OK ' + id);
+ //   if (clients.indexOf(id) == -1) {
+ //       ws.send('AUTH_OK ' + id);
+ //       console.log("new connection " + id);
+  // } else {
+//     ws.send('AUTH_CLOSE ' + id);  
+ //     }//если айди совпадают
  
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
