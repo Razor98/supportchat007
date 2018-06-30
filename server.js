@@ -15,11 +15,17 @@ const COMMANDS = {
     eino: 'non'
 }
 
-
+wss.broadcast = function broadcast(data) {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(data);
+        }
+    });
+};
 wss.on('connection', function connection(ws) {
-    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-    clients.push(ws);
-    ws.send('AUTH_OK ' + id);
+//    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+   // clients.push(ws);
+  //  ws.send('AUTH_OK ' + id);
  //   if (clients.indexOf(id) == -1) {
  //       ws.send('AUTH_OK ' + id);
  //       console.log("new connection " + id);
@@ -30,10 +36,15 @@ wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
       //  users[message.userName] = ws;
-            info = message;
-            for (var key in clients) {
-                clients[key].send(info);             
+        info = message;
+        wss.clients.forEach(function each(client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(info);
             }
+        });
+       //     for (var key in clients) {
+     //           clients[key].send(info);             
+      //      }
 
     });
 
