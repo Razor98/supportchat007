@@ -16,11 +16,11 @@ const COMMANDS = {
 }
 
 wss.on('connection', function connection(ws) {
-    var id = Math.floor(Math.random() * (99999999 - 0 + 1)) + 0;
+    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     try {
         var temp = find(clients, id);
     } catch (ex) {
-        var temp = 0;
+        var temp = -1;
     }
     if (temp == -1) {
         clients[id] = ws;
