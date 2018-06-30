@@ -43,7 +43,11 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
         info = message;
         users[message] = ws;
-        message.send('AUTH 1');
+        var conf;
+        for (var key in users) {
+            conf = conf +' '+ key;
+        }
+        ws.send('AUTH 1 ' + conf);
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
 //                client.send(info);
