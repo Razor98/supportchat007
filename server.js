@@ -18,7 +18,7 @@ const COMMANDS = {
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     if (clients.indexOf(id) == -1) {
-        clients.push(id);
+        clients.push(ws);
         ws.send('AUTH_OK ' + id);
         console.log("new connection " + id);
     } else {
@@ -27,10 +27,8 @@ wss.on('connection', function connection(ws) {
  
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        for (var key in clients) {//перебор всех клиентов и отправка всем сообщения
-            info = message;
-            clients[key].send(message);
-        }
+        info = message;
+        clients[ws].send(message);
     });
 
     ws.on('close', function () {
