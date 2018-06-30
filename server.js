@@ -82,7 +82,7 @@ wss.on('connection', function connection(ws) {
    //     }
 
   //  }, 1000 / 24);
-    if (ws.readyState === WebSocket.OPEN) {
+    if (ws.readyState === true) {
         setInterval(function () {
             ws.send('AUTH 7 ');
         }, 8000);
