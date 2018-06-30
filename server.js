@@ -59,19 +59,6 @@ wss.on('connection', function connection(ws) {
        //     for (var key in clients) {
      //           clients[key].send(info);             
       //      }
-        interval = setInterval(() => {
-            // do not send the same pic
-            if (current - lstSent > 0) {
-                lstSent = current;
-                if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
-                    ws.close;                   
-                    return 0;
-                }
-                ws.send('AUTH 7 ' + new Date().valueOf() - current);
-            }
-
-        }, 1000 / 24);
-
     });
 
     ws.on('close', function () {
@@ -85,5 +72,17 @@ wss.on('connection', function connection(ws) {
         delete connections[ws.id];
     });
 
+    interval = setInterval(() => {
+        // do not send the same pic
+        if (current - lstSent > 0) {
+            lstSent = current;
+            if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
+                ws.close;
+                return 0;
+            }
+            ws.send('AUTH 7 ' + new Date().valueOf() - current);
+        }
+
+    }, 1000 / 24);
     console.log('Connected', ws.url);
 });
