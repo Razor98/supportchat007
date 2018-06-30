@@ -16,41 +16,8 @@ const COMMANDS = {
 }
 
 wss.on('connection', function connection(ws) {
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (searchElement, fromIndex) {
-            var k;
-            if (this == null) {
-                throw new TypeError('"this" is null or not defined');
-            }
-
-            var O = Object(this);
-            var len = O.length >>> 0;
-
-            if (len === 0) {
-                return -1;
-            }
-            var n = +fromIndex || 0;
-
-            if (Math.abs(n) === Infinity) {
-                n = 0;
-            }
-            if (n >= len) {
-                return -1;
-            }
-            k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-            // 9. Пока k < len, будем повторять
-            while (k < len) {
-                if (k in O && O[k] === searchElement) {
-                    return k;
-                }
-                k++;
-            }
-            return -1;
-        };
-    }
     var id = Math.floor(Math.random() * (99999999 - 0 + 1)) + 0;
-    if (clients.indexOf(id) == -1) {
+    if (find(clients, id) == -1) {
         clients[id] = ws;
         ws.send('AUTH_OK ' + id);
         console.log("new connection " + id);
