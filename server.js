@@ -27,7 +27,7 @@ const interval = setInterval(function ping() {
         ws.isAlive = false;
         ws.ping(noop);
     });
-}, 30000);
+}, 1000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
