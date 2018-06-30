@@ -39,7 +39,7 @@ wss.on('connection', function connection(ws) {
     ws.isAlive = true;
     ws.on('pong', heartbeat);
     ws.send('AUTH 0');
-    console.log("new connection " + users.length);
+    console.log("new connection " + users.values);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -56,7 +56,7 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
         info = message;
         var keyname = '';
-        if (message.indexOf('id:') != -1) {
+        if (message.indexOf('id=') != -1) {
             var name = message.split(':')[1];
             users[name] = ws;
      //       users[name].sockets.push(connection);
@@ -77,7 +77,7 @@ wss.on('connection', function connection(ws) {
       //      }
     });
     ws.on('close', function () {
-        console.log('close connection ' +  users.length);
+        console.log('close connection ' + users.values);
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
