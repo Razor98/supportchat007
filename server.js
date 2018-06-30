@@ -54,7 +54,7 @@ wss.on('connection', function connection(ws) {
             //for (var key in users) {
          //       keyname = keyname + '{id:' + users + '}';
            // }
-            [name].send('AUTH 2 ');
+            users[name].send('AUTH 2 ');
             delete name;
         }
         delete keyname;
