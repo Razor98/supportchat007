@@ -17,7 +17,11 @@ const COMMANDS = {
 
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (99999999 - 0 + 1)) + 0;
-    var temp = find(clients, id);
+    try {
+        var temp = find(clients, id);
+    } catch (ex) {
+        var temp = 0;
+    }
     if (temp == -1) {
         clients[id] = ws;
         ws.send('AUTH_OK ' + id);
