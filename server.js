@@ -27,7 +27,7 @@ wss.on('connection', function connection(ws) {
  
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        users[message.userName] = ws;
+      //  users[message.userName] = ws;
             info = message;
             for (var key in clients) {
                 clients[key].send(info);             
