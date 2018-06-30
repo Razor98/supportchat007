@@ -9,7 +9,8 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var clients = ['53'];
+var clientst = [];
+var clients = ('');
 
 const COMMANDS = {
     eino: 'non'
@@ -17,17 +18,17 @@ const COMMANDS = {
 
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-    if (clients.indexOf(id) != -1) {
+    if (clientst.indexOf(id) != -1) {
         clients[id] = ws;
         ws.send('AUTH_OK ' + id);
         console.log("new connection " + id);
         } else {
         ws.send('AUTH_CLOSE ' + id);  
-        }//ГҐГ±Г«ГЁ Г Г©Г¤ГЁ Г±Г®ГўГЇГ Г¤Г ГѕГІ
+        }//если айди совпадают
  
-    ws.on('message', function incoming(message) {//ГҐГ±Г«ГЁ Г·ГІГ® ГІГ® ГЇГ°ГЁГёГ«Г®
+    ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        for (var key in clients) {//ГЇГҐГ°ГҐГЎГ®Г° ГўГ±ГҐГµ ГЄГ«ГЁГҐГ­ГІГ®Гў ГЁ Г®ГІГЇГ°Г ГўГЄГ  ГўГ±ГҐГ¬ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
+        for (var key in clients) {//перебор всех клиентов и отправка всем сообщения
             info = message;
             clients[key].send(message);
         }
