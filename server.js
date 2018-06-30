@@ -7,21 +7,23 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
 const wss = new SocketServer({ server });
 
-var info = new Buffer('');
+var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
 var clients = {};
 
 const COMMANDS = {
-    confirmFileReceived: 'c0'
+    eino: 'non'
 }
 
 wss.on('connection', function connection(ws) {
-    var id = Math.random();
-    clients[id] = ws;
+    var id = Math.floor(Math.random() * (99999999 - 0 + 1)) + 0;
+    for (var ewq in clients) {
+        if (ewq == id) {ws.send('AUTH_CLOSE ' + id); } else {clients[id] = ws;}//если айди совпадают
+    }
     console.log("new connection " + id);
-    ws.on('message', function incoming(message) {//ГҐГ±Г«ГЁ Г·ГІГ® ГІГ® ГЇГ°ГЁГёГ«Г®
+    ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        for (var key in clients) {//ГЇГҐГ°ГҐГЎГ®Г° ГўГ±ГҐГµ ГЄГ«ГЁГҐГ­ГІГ®Гў ГЁ Г®ГІГЇГ°Г ГўГЄГ  ГўГ±ГҐГ¬ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
+        for (var key in clients) {//перебор всех клиентов и отправка всем сообщения
             info = message;
             clients[key].send(message);
         }
@@ -33,5 +35,5 @@ wss.on('connection', function connection(ws) {
     });
 
     console.log('Connected', ws.url);
-    ws.send('NUM');
+    ws.send('AUTH_OK '+id);
 });
