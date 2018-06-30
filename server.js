@@ -41,6 +41,10 @@ wss.on('connection', function connection(ws) {
         console.log('close connection ' + id);
         delete clients[id];
     });
+    ws.on('error', function () {
+        console.log('error connection ' + id);
+        delete clients[id];
+    });
 
     console.log('Connected', ws.url);
 });
