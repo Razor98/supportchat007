@@ -20,7 +20,7 @@ wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     clients.push(ws);
     if (clients.indexOf(id) == -1) {
-        ws.send('AUTH_OK ' + ws);
+        ws.send('AUTH_OK ' + id);
         console.log("new connection " + id);
    } else {
         ws.send('AUTH_CLOSE ' + id);  
