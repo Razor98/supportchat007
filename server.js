@@ -9,7 +9,7 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var clients = ['fdsfs'];
+var clients = ['53'];
 
 const COMMANDS = {
     eino: 'non'
@@ -23,11 +23,11 @@ wss.on('connection', function connection(ws) {
         console.log("new connection " + id);
         } else {
         ws.send('AUTH_CLOSE ' + id);  
-        }//если айди совпадают
+        }//ГҐГ±Г«ГЁ Г Г©Г¤ГЁ Г±Г®ГўГЇГ Г¤Г ГѕГІ
  
-    ws.on('message', function incoming(message) {//если что то пришло
+    ws.on('message', function incoming(message) {//ГҐГ±Г«ГЁ Г·ГІГ® ГІГ® ГЇГ°ГЁГёГ«Г®
         console.log('message ' + message);
-        for (var key in clients) {//перебор всех клиентов и отправка всем сообщения
+        for (var key in clients) {//ГЇГҐГ°ГҐГЎГ®Г° ГўГ±ГҐГµ ГЄГ«ГЁГҐГ­ГІГ®Гў ГЁ Г®ГІГЇГ°Г ГўГЄГ  ГўГ±ГҐГ¬ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
             info = message;
             clients[key].send(message);
         }
