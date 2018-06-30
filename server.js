@@ -14,25 +14,25 @@ var clients = [];
 const COMMANDS = {
     eino: 'non'
 }
-function sendinf(message) {
-    for (var i = 0; i < CLIENTS.length; i++) {
-        clients[i].send(message);
-    }
-}
+
 wss.on('connection', function connection(ws) {
-    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+    //var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     if (clients.indexOf(id) == -1) {
         clients.push(ws);
-        ws.send('AUTH_OK ' + ws[0]);
-        console.log("new connection " + ws[0]);
-    } else {
+        ws.send('AUTH_OK ' + id);
+        console.log("new connection " + id);
+   } else {
         ws.send('AUTH_CLOSE ' + id);  
         }//если айди совпадают
  
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
+        users[message.userName] = ws;
             info = message;
-            //clients[ws].send(message);
+            for (var key in clients) {
+                clients[key].send(info);             
+            }
+
     });
 
     ws.on('close', function () {
