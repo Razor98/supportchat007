@@ -62,7 +62,6 @@ wss.on('connection', function connection(ws) {
         interval = setInterval(() => {
             // do not send the same pic
             if (current - lstSent > 0) {
-                var toSend = screenFrame;
                 lstSent = current;
                 if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
                     ws.close;
