@@ -14,7 +14,11 @@ var clients = [];
 const COMMANDS = {
     eino: 'non'
 }
-
+function sendinf(message) {
+    for (var i = 0; i < CLIENTS.length; i++) {
+        clients[i].send(message);
+    }
+}
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     if (clients.indexOf(id) == -1) {
@@ -27,8 +31,8 @@ wss.on('connection', function connection(ws) {
  
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        info = message;
-        clients[ws].send(message);
+            info = message;
+            sendinf(info);
     });
 
     ws.on('close', function () {
