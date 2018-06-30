@@ -15,11 +15,12 @@ const COMMANDS = {
     eino: 'non'
 }
 
+
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+    clients.push(ws);
     if (clients.indexOf(id) == -1) {
-        clients.push(ws);
-        ws.send('AUTH_OK ' + id);
+        ws.send('AUTH_OK ' + ws);
         console.log("new connection " + id);
    } else {
         ws.send('AUTH_CLOSE ' + id);  
@@ -30,9 +31,7 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
             info = message;
             for (var key in clients) {
-                if (client.readyState === client.OPEN) {
-                    clients[key].send(info);
-                }
+                clients[key].send(info);             
             }
 
     });
