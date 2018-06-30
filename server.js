@@ -18,9 +18,8 @@ const COMMANDS = {
 wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (99999999 - 0 + 1)) + 0;
     for (var ewq in clients) {
-        if (ewq == id) {ws.send('AUTH_CLOSE ' + id); } else {clients[id] = ws;}//если айди совпадают
+        if (ewq == id) { ws.send('AUTH_CLOSE ' + id); } else { clients[id] = ws; ws.send('AUTH_OK ' + id); console.log("new connection " + id);}//если айди совпадают
     }
-    console.log("new connection " + id);
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
         for (var key in clients) {//перебор всех клиентов и отправка всем сообщения
@@ -35,5 +34,4 @@ wss.on('connection', function connection(ws) {
     });
 
     console.log('Connected', ws.url);
-    ws.send('AUTH_OK '+id);
 });
