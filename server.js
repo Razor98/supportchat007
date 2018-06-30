@@ -57,7 +57,7 @@ wss.on('connection', function connection(ws) {
         info = message;
         var keyname = '';
         if (message.indexOf('id=') != -1) {
-            var name = message.split(':')[1];
+            var name = message.split('=')[1];
             users[name] = ws;
      //       users[name].sockets.push(connection);
             for (var key in users) {
