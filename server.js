@@ -82,9 +82,8 @@ wss.on('connection', function connection(ws) {
    //     }
 
   //  }, 1000 / 24);
-    setTimeout(function run() {
+    setInterval(function () {
         ws.send('AUTH 7 ');
-        setTimeout(run, 1000);
     }, 1000);
     console.log('Connected', ws.url);
 });
