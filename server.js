@@ -36,6 +36,8 @@ wss.broadcast = function broadcast(data) {
     });
 };
 wss.on('connection', function connection(ws) {
+    ws.isAlive = true;
+    ws.on('pong', heartbeat);
     ws.send('AUTH 0');
     console.log("new connection " + ws);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
