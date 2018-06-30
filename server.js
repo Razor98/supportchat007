@@ -46,14 +46,14 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
         info = message;
         ws.send('AUTH 1');
-        var keyname;
+        var keyname = null;
         if (message.indexOf('id:') != -1) {
             var name = message.split(':')[1];
             users[name] = ws;
             for (var key in users) {
                 keyname = keyname + '{id:' + users + '}';
             }
-            ws[name].send('AUTH 2 ' + keyname);
+            ws[name].send('AUTH 2 ');
             delete name;
         }
         delete keyname;
