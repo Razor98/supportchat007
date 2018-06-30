@@ -11,6 +11,9 @@ var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
 var clients = [];
 var users = [];
+var conf;
+const WAIT_FRAME_TIMEOUT = 2000;
+var lstSent = 1;
 
 const COMMANDS = {
     eino: 'non'
@@ -27,6 +30,7 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', function connection(ws) {
     ws.send('AUTH 0');
     console.log("new connection " + ws.id);
+    var interval;
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -43,7 +47,6 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
         info = message;
         users[message] = ws;
-        var conf;
         for (var key in users) {
             conf = conf +' '+ key;
         }
@@ -56,6 +59,21 @@ wss.on('connection', function connection(ws) {
        //     for (var key in clients) {
      //           clients[key].send(info);             
       //      }
+        interval = setInterval(() => {
+            // do not send the same pic
+            if (current - lstSent > 0) {
+                var toSend = screenFrame;
+                lstSent = current;
+                if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
+                    ws.close;
+                    
+                    return 0;
+                }
+               // ws.send('AUTH 7');
+                ws.ping;
+            }
+
+        }, 1000 / 24);
 
     });
 
