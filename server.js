@@ -64,12 +64,10 @@ wss.on('connection', function connection(ws) {
             if (current - lstSent > 0) {
                 lstSent = current;
                 if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
-                    ws.close;
-                    
+                    ws.close;                   
                     return 0;
                 }
-               // ws.send('AUTH 7');
-                ws.ping;
+                ws.send('AUTH 7 ' + new Date().valueOf() - current);
             }
 
         }, 1000 / 24);
