@@ -68,7 +68,7 @@ wss.on('connection', function connection(ws) {
     });
     ws.on('close', function () {
         //console.log('close connection ' + users[name]);
-        delete users[name.id];
+        delete users[ws.id];
     });
     ws.on('error', function () {
        // console.log('error connection, delete user ' + users[name]);
