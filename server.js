@@ -45,7 +45,6 @@ wss.on('connection', function connection(ws) {
         console.log('message ' + message);
       //  users[message.userName] = ws;
         info = message;
-        ws.send('AUTH 1');
         var keyname = '';
         if (message.indexOf('id:') != -1) {
             var name = message.split(':')[1];
@@ -54,7 +53,7 @@ wss.on('connection', function connection(ws) {
             for (var key in users) {
                 keyname = keyname + '{id:' + key + '}';
             }
-            users[name].send('AUTH 2 ' + keyname);
+            users[name].send('AUTH 1 ' + keyname);
             delete name;
         }
         delete keyname;
@@ -69,14 +68,12 @@ wss.on('connection', function connection(ws) {
     });
 
     ws.on('close', function () {
-        console.log('close connection ' + ws.id);
-        //delete clients[id];
-        delete connections[ws.id];
+        console.log('close connection ' + users[name]);
+        delete users[name];
     });
     ws.on('error', function () {
-        console.log('error connection ' + ws.id);
-       // delete clients[id];
-        delete connections[ws.id];
+        console.log('error connection, delete user ' + users[name]);
+        delete users[name];
     });
     var interval;
    // interval = setInterval(() => {
