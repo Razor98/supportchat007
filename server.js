@@ -32,7 +32,7 @@ wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
             info = message;
-            sendinf(info);
+            ws.send(message);
     });
 
     ws.on('close', function () {
