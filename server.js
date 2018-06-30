@@ -27,7 +27,7 @@ const interval = setInterval(function ping() {
         ws.isAlive = false;
         ws.ping(noop);
     });
-}, 1000);
+}, 30000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
@@ -39,7 +39,7 @@ wss.on('connection', function connection(ws) {
     ws.isAlive = true;
     ws.on('pong', heartbeat);
     ws.send('AUTH 0');
-    console.log("new connection " + ws);
+    console.log("new connection " + users.length);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -77,7 +77,7 @@ wss.on('connection', function connection(ws) {
       //      }
     });
     ws.on('close', function () {
-        //console.log('close connection ' + users[name]);
+        console.log('close connection ' +  users.length);
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
