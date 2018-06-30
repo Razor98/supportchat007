@@ -9,17 +9,25 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var clients = [];
 var users = [];
-var conf;
-const WAIT_FRAME_TIMEOUT = 2000;
-var lstSent = 1;
+
 
 const COMMANDS = {
     eino: 'non'
 }
-var connections = {};
-var connectionIDCounter = 0;
+function noop() { }
+
+function heartbeat() {
+    this.isAlive = true;
+}
+const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+        if (ws.isAlive === false) return ws.terminate();
+
+        ws.isAlive = false;
+        ws.ping(noop);
+    });
+}, 30000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
@@ -29,7 +37,7 @@ wss.broadcast = function broadcast(data) {
 };
 wss.on('connection', function connection(ws) {
     ws.send('AUTH 0');
-    console.log("new connection " + ws.id);
+    console.log("new connection " + ws);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -68,28 +76,11 @@ wss.on('connection', function connection(ws) {
     });
     ws.on('close', function () {
         //console.log('close connection ' + users[name]);
-        delete users[ws.eventNames];
+        //delete users[ws.eventNames];
     });
     ws.on('error', function () {
        // console.log('error connection, delete user ' + users[name]);
         //delete users[name];
     });
-    var interval;
-   // interval = setInterval(() => {
-  //      if (current - lstSent > 0) {
-   //         lstSent = current;
-   //         if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
-   //             ws.close;
-   //             return 0;
-   //         }
-    //        ws.send('AUTH 7 ' + new Date().valueOf() - current);
-   //     }
-
-  //  }, 1000 / 24);
-    if (ws.readyState === true) {
-        setInterval(function () {
-            ws.send('AUTH 7 ');
-        }, 8000);
-    }
     console.log('Connected', ws.url);
 });
