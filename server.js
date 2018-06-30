@@ -21,7 +21,8 @@ wss.on('connection', function connection(ws) {
         if (ewq == id) {
             ws.send('AUTH_CLOSE ' + id);
         } else {
-            clients[id] = ws; ws.send('AUTH_OK ' + id);
+            clients[id] = ws;
+            ws.send('AUTH_OK ' + id);
             console.log("new connection " + id);
         }//если айди совпадают
     }
