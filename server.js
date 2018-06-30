@@ -30,7 +30,9 @@ wss.on('connection', function connection(ws) {
       //  users[message.userName] = ws;
             info = message;
             for (var key in clients) {
-                clients[key].send(info);             
+                if (client.readyState === client.OPEN) {
+                    clients[key].send(info);
+                }
             }
 
     });
