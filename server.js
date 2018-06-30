@@ -30,7 +30,6 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', function connection(ws) {
     ws.send('AUTH 0');
     console.log("new connection " + ws.id);
-    var interval;
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
    // clients.push(ws);
   //  ws.send('AUTH_OK ' + id);
@@ -71,18 +70,21 @@ wss.on('connection', function connection(ws) {
        // delete clients[id];
         delete connections[ws.id];
     });
+    var interval;
+   // interval = setInterval(() => {
+  //      if (current - lstSent > 0) {
+   //         lstSent = current;
+   //         if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
+   //             ws.close;
+   //             return 0;
+   //         }
+    //        ws.send('AUTH 7 ' + new Date().valueOf() - current);
+   //     }
 
-    interval = setInterval(() => {
-        // do not send the same pic
-        if (current - lstSent > 0) {
-            lstSent = current;
-            if (new Date().valueOf() - current > WAIT_FRAME_TIMEOUT) {
-                ws.close;
-                return 0;
-            }
-            ws.send('AUTH 7 ' + new Date().valueOf() - current);
-        }
-
-    }, 1000 / 24);
+  //  }, 1000 / 24);
+    setTimeout(function run() {
+        ws.send('AUTH 7 ');
+        setTimeout(run, 1000);
+    }, 1000);
     console.log('Connected', ws.url);
 });
