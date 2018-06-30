@@ -66,14 +66,17 @@ wss.on('connection', function connection(ws) {
      //           clients[key].send(info);             
       //      }
     });
-
+    users[name].on('close', function () {
+        console.log('close connection ' + users[name]);
+        delete users[name];
+    });
     ws.on('close', function () {
         //console.log('close connection ' + users[name]);
-        delete users[name];
+        //delete users[name];
     });
     ws.on('error', function () {
        // console.log('error connection, delete user ' + users[name]);
-        delete users[name];
+        //delete users[name];
     });
     var interval;
    // interval = setInterval(() => {
