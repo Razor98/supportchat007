@@ -9,7 +9,7 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var clients = [];
+var clients = ["1"];
 
 const COMMANDS = {
     eino: 'non'
