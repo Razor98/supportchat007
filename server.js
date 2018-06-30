@@ -68,11 +68,11 @@ wss.on('connection', function connection(ws) {
     });
 
     ws.on('close', function () {
-        console.log('close connection ' + users[name]);
+        //console.log('close connection ' + users[name]);
         delete users[name];
     });
     ws.on('error', function () {
-        console.log('error connection, delete user ' + users[name]);
+       // console.log('error connection, delete user ' + users[name]);
         delete users[name];
     });
     var interval;
