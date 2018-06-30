@@ -14,7 +14,8 @@ var clients = [];
 const COMMANDS = {
     eino: 'non'
 }
-
+var connections = {};
+var connectionIDCounter = 0;
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
@@ -32,16 +33,18 @@ wss.on('connection', function connection(ws) {
   // } else {
 //     ws.send('AUTH_CLOSE ' + id);  
  //     }//если айди совпадают
- 
+    ws.id = connectionIDCounter++;
+    connections[ws.id] = ws;
+    console.log("new connection " + ws.id + ' ' + connectionIDCounter);
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
       //  users[message.userName] = ws;
         info = message;
-        wss.clients.forEach(function each(client) {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(info);
-            }
-        });
+//        wss.clients.forEach(function each(client) {
+//            if (client !== ws && client.readyState === WebSocket.OPEN) {
+//                client.send(info);
+//            }
+     //   });
        //     for (var key in clients) {
      //           clients[key].send(info);             
       //      }
@@ -51,10 +54,12 @@ wss.on('connection', function connection(ws) {
     ws.on('close', function () {
        // console.log('close connection ' + id);
         //delete clients[id];
+        delete connections[ws.id];
     });
     ws.on('error', function () {
       //  console.log('error connection ' + id);
        // delete clients[id];
+        delete connections[ws.id];
     });
 
     console.log('Connected', ws.url);
