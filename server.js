@@ -23,8 +23,8 @@ wss.on('connection', function connection(ws) {
     var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     if (clients.indexOf(id) == -1) {
         clients.push(ws);
-        ws.send('AUTH_OK ' + ws);
-        console.log("new connection " + ws);
+        ws.send('AUTH_OK ' + ws[0]);
+        console.log("new connection " + ws[0]);
     } else {
         ws.send('AUTH_CLOSE ' + id);  
         }//если айди совпадают
