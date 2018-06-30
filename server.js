@@ -50,11 +50,11 @@ wss.on('connection', function connection(ws) {
         if (message.indexOf('id:') != -1) {
             var name = message.split(':')[1];
             users[name] = ws;
-            //users[name].sockets.push(connection);
-            //for (var key in users) {
-         //       keyname = keyname + '{id:' + users + '}';
-           // }
-            users[name].send('AUTH 2 ');
+     //       users[name].sockets.push(connection);
+            for (var key in users) {
+                keyname = keyname + '{id:' + users + '}';
+            }
+            users[name].send('AUTH 2 ' + keyname);
             delete name;
         }
         delete keyname;
