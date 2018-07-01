@@ -45,6 +45,7 @@ wss.on('connection', function connection(ws) {
         console.log('message ' + message);
         info = message;
         if (message.indexOf('id=') != -1) {
+            try {
             var keyname = '';
             var name = message.split('=')[1];
             users[name] = ws;
@@ -55,27 +56,35 @@ wss.on('connection', function connection(ws) {
             users[name].send('AUTH 1 ' + keyname);
             delete name;
             delete keyname;
+            } catch (err) {
+                console.log('error ID  ' + err);
+            }
         }
         else if (message.indexOf('IDENT 33') != -1) {
-            var keyname = '';
-            var recipient = message.split('Z5F3G*HH')[1];
-            var sender = message.split('Z5F3G*HH')[2];
-            var text = message.split('Z5F3G*HH')[3];
-            for (var key in users) {
-                keyname = keyname + key;
-            }
-            if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + text + '}');
-                users[sender].send('IDENT 1 ' + recipient);
-            } else {
-                users[sender].send('IDENT 404 ' + recipient);
-            }         
+            try {
+                var keyname = '';
+                var recipient = message.split('Z5F3G*HH')[1];
+                var sender = message.split('Z5F3G*HH')[2];
+                var text = message.split('Z5F3G*HH')[3];
+                for (var key in users) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(recipient) != -1) {
+                    users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + text + '}');
+                    users[sender].send('IDENT 1 ' + recipient);
+                } else {
+                    users[sender].send('IDENT 404 ' + recipient);
+                }
             delete keyname;
             delete recipient;
             delete text;
             delete sender;
+            } catch (err) {
+                console.log('error IDENT 33  ' + err);
+            }
         }
         else if (message.indexOf('RSA 0') != -1) {
+            try {
             var keyname = '';
             var recipient = message.split('=')[1];//кому предназначается
             var sender = message.split('=')[2];//кто отправляет
@@ -91,8 +100,12 @@ wss.on('connection', function connection(ws) {
             delete keyname;
             delete recipient;
             delete sender;
+            } catch (err) {
+                console.log('error RSA 0  ' + err);
+            }
         }
         else if (message.indexOf('RSA 2') != -1) {
+            try {
             var keyname = '';
             var recipient = message.split('=')[1];//кому предназначается
             var sender = message.split('=')[2];//кто отправляет
@@ -110,6 +123,9 @@ wss.on('connection', function connection(ws) {
             delete recipient;
             delete sender;
             delete RSAkey;
+            } catch (err) {
+                console.log('error RSA 2  ' + err);
+            }
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
