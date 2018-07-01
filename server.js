@@ -65,8 +65,10 @@ wss.on('connection', function connection(ws) {
                 keyname = keyname + '{id:' + key + '}';
             }
             if (message.indexOf(keyname) != -1) {
-                users[keyname].send('IDENT 33 {sender:' + sender +'}{message:'+ message+'}');
-            }           
+                users[keyname].send('IDENT 33 {sender:' + sender + '}{message:' + message + '}');
+            } else {
+                users[sender].send('IDENT 404 ' + recipient);
+            }         
             delete keyname;
             delete recipient;
             delete message;
