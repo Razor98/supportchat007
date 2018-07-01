@@ -62,10 +62,10 @@ wss.on('connection', function connection(ws) {
             var sender = message.split('Z5F3G*HH')[2];
             var message = message.split('Z5F3G*HH')[3];
             for (var key in users) {
-                keyname = keyname + '{id:' + key + '}';
+                keyname = keyname + key;
             }
             if (message.indexOf(keyname) != -1) {
-                users[keyname].send('IDENT 33 {sender:' + sender + '}{message:' + message + '}');
+                users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + message + '}');
             } else {
                 users[sender].send('IDENT 404 ' + recipient);
             }         
