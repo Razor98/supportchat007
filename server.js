@@ -92,8 +92,16 @@ wss.on('connection', function connection(ws) {
                 keyname = keyname + key;
             }
             if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('RSA 0 {sender:' + sender + '}');
+                try {
+                    users[recipient].send('RSA 0 {sender:' + sender + '}');
+                } catch (err) {
+                    console.log('error RSA 0 recepient send 01 ' + err);
+                }
+                try {
                 users[sender].send('RSA 1 ' + recipient);
+                } catch (err) {
+                    console.log('error RSA 0 recepient send 02 ' + err);
+                }
             } else {
                 users[sender].send('RSA 0 404 ' + recipient);
             }
