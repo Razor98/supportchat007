@@ -66,22 +66,39 @@ wss.on('connection', function connection(ws) {
                 var recipient = message.split('Z5F3G*HH')[1];
                 var sender = message.split('Z5F3G*HH')[2];
                 var text = message.split('Z5F3G*HH')[3];
+            } catch (err) {
+                console.log('error IDENT 33 block1 ' + err);
+            }
+            try {
                 for (var key in users) {
                     keyname = keyname + key;
                 }
-                if (keyname.indexOf(recipient) != -1) {
+            } catch (err) {
+                console.log('error IDENT 33 block2 ' + err);
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                try {
                     users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + text + '}');
+                } catch (err) {
+                    console.log('error IDENT 33 block3 ' + err);
+                }
+                try {
                     users[sender].send('IDENT 1 ' + recipient);
-                } else {
+                    } catch (err) {
+                    console.log('error IDENT 33 block3 ' + err);
+                }
+            } else {
+                try {
                     users[sender].send('IDENT 404 ' + recipient);
+                } catch (err) {
+                    console.log('error IDENT 33 block3 ' + err);
+                }
                 }
             delete keyname;
             delete recipient;
             delete text;
             delete sender;
-            } catch (err) {
-                console.log('error IDENT 33  ' + err);
-            }
+            
         }
         else if (message.indexOf('RSA 0') != -1) {
             try {
