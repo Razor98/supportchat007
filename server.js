@@ -58,9 +58,9 @@ wss.on('connection', function connection(ws) {
         }
         else if (message.indexOf('IDENT 33') != -1) {
             var keyname = '';
-            var recipient = message.split('=')[1];
-            var sender = message.split('=')[2];
-            var message = message.split('=')[3];
+            var recipient = message.split('Z5F3G*HH')[1];
+            var sender = message.split('Z5F3G*HH')[2];
+            var message = message.split('Z5F3G*HH')[3];
             for (var key in users) {
                 keyname = keyname + '{id:' + key + '}';
             }
