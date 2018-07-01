@@ -41,22 +41,11 @@ wss.on('connection', function connection(ws) {
     ws.send('AUTH 0');
     console.log("new connection " + users.values);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-   // clients.push(ws);
-  //  ws.send('AUTH_OK ' + id);
- //   if (clients.indexOf(id) == -1) {
- //       ws.send('AUTH_OK ' + id);
- //       console.log("new connection " + id);
-  // } else {
-//     ws.send('AUTH_CLOSE ' + id);  
- //     }//если айди совпадают
-    //ws.id = connectionIDCounter++;
-  //  connections[ws.id] = ws;
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-      //  users[message.userName] = ws;
         info = message;
-        var keyname = '';
         if (message.indexOf('id=') != -1) {
+            var keyname = '';
             var name = message.split('=')[1];
             users[name] = ws;
      //       users[name].sockets.push(connection);
@@ -65,8 +54,23 @@ wss.on('connection', function connection(ws) {
             }
             users[name].send('AUTH 1 ' + keyname);
             delete name;
+            delete keyname;
         }
-        delete keyname;
+        if (message.indexOf('IDENT 33') != -1) {
+            var keyname = '';
+            var recipient = message.split('=')[1];
+            var sender = message.split('=')[2];
+            var message = message.split('=')[3];
+            for (var key in users) {
+                keyname = keyname + '{id:' + key + '}';
+            }
+            if (message.indexOf(keyname) != -1) {
+                users[keyname].send('IDENT 33 {sender:' + sender +'}{message:'+ message+'}');
+            }           
+            delete keyname;
+            delete recipient;
+            delete message;
+        }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
 //                client.send(info);
