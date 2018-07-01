@@ -66,12 +66,50 @@ wss.on('connection', function connection(ws) {
             }
             if (keyname.indexOf(recipient) != -1) {
                 users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + text + '}');
+                users[sender].send('IDENT 1 ' + recipient);
             } else {
                 users[sender].send('IDENT 404 ' + recipient);
             }         
             delete keyname;
             delete recipient;
-            delete message;
+            delete text;
+            delete sender;
+        }
+        else if (message.indexOf('RSA 0') != -1) {
+            var keyname = '';
+            var recipient = message.split('=')[1];//кому предназначается
+            var sender = message.split('=')[2];//кто отправляет
+            for (var key in users) {
+                keyname = keyname + key;
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                users[recipient].send('RSA 0 {sender:' + sender + '}');
+                users[sender].send('RSA 1 ' + recipient);
+            } else {
+                users[sender].send('RSA 0 404 ' + recipient);
+            }
+            delete keyname;
+            delete recipient;
+            delete sender;
+        }
+        else if (message.indexOf('RSA 2') != -1) {
+            var keyname = '';
+            var recipient = message.split('=')[1];//кому предназначается
+            var sender = message.split('=')[2];//кто отправляет
+            var RSAkey = message.split('=')[3];//ключик rsa
+            for (var key in users) {
+                keyname = keyname + key;
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                users[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey+'}');
+                users[sender].send('RSA 3 ' + recipient);
+            } else {
+                users[sender].send('RSA 3 404 ' + recipient);
+            }
+            delete keyname;
+            delete recipient;
+            delete sender;
+            delete RSAkey;
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
