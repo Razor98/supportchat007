@@ -56,7 +56,7 @@ wss.on('connection', function connection(ws) {
             delete name;
             delete keyname;
         }
-        if (message.indexOf('IDENT 33') != -1) {
+        else if (message.indexOf('IDENT 33') != -1) {
             var keyname = '';
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
