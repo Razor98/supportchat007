@@ -53,19 +53,19 @@ wss.on('connection', function connection(ws) {
                     } else {
                         //wss.broadcast('AUTH REF', client => client !== ws);
                         try {
-                            wss.clients.forEach(function each(client) {
-                                if (client !== ws) {
-                                    client.send('AUTH REF');
-                                }
-                            });
-                        } catch (err) {
-                            console.log('error REF  ' + err);
-                        }
-                        try {
                             var keyname = '';
                             var name = message.split('=')[1];
                             users[name] = ws;
                             myname = name
+                            try {
+                                wss.clients.forEach(function each(client) {
+                                    if (client !== ws) {
+                                        client.send('AUTH NEW {' + name + '}');
+                                    }
+                                });
+                            } catch (err) {
+                                console.log('error REF  ' + err);
+                            }
                             //       users[name].sockets.push(connection);
                             for (var key in users) {
                                 keyname = keyname + '{id:' + key + '}';
@@ -81,19 +81,19 @@ wss.on('connection', function connection(ws) {
                 delete protekt;
             } else {
                 try {
-                    wss.clients.forEach(function each(client) {
-                        if (client !== ws) {
-                            client.send('AUTH REF');
-                        }
-                    });
-                } catch (err) {
-                    console.log('error REF  ' + err);
-                }
-                try {
                     var keyname = '';
                     var name = message.split('=')[1];
                     users[name] = ws;
                     myname = name
+                    try {
+                        wss.clients.forEach(function each(client) {
+                            if (client !== ws) {
+                                client.send('AUTH NEW {' + name+'}');
+                            }
+                        });
+                    } catch (err) {
+                        console.log('error REF  ' + err);
+                    }
                     //       users[name].sockets.push(connection);
                     for (var key in users) {
                         keyname = keyname + '{id:' + key + '}';
