@@ -47,11 +47,15 @@ wss.on('connection', function connection(ws) {
         info = message;
         if (message.indexOf('id=') != -1) {
             //wss.broadcast('AUTH REF', client => client !== ws);
+            try
             wss.clients.forEach(function each(client) {
                 if (client !== ws && client.readyState == WebSocket.OPEN) {
                     client.send('AUTH REF');
                 }
             });
+        } catch (err) {
+            console.log('error REF  ' + err);
+        }
             try {
             var keyname = '';
             var name = message.split('=')[1];
