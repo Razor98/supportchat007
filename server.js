@@ -189,7 +189,7 @@ wss.on('connection', function connection(ws) {
         try {
             wss.clients.forEach(function each(client) {
                 if (client !== ws) {
-                    client.send('AUTH REF');
+                    client.send('AUTH DEL_USER {' + myname + '}');
                 }
             });
         } catch (err) {
@@ -205,7 +205,7 @@ wss.on('connection', function connection(ws) {
         try {
             wss.clients.forEach(function each(client) {
                 if (client !== ws) {
-                    client.send('AUTH REF');
+                    client.send('AUTH DEL_USER {' + myname+'}');
                 }
             });
         } catch (err) {
