@@ -175,9 +175,8 @@ wss.on('connection', function connection(ws) {
     ws.on('close', function (ws) {
         for (var key in users) {
             console.log('ws ' + ws);
-            console.log('ws name ' + ws.toLocaleString);
-            console.log('ws name 2 ' + ws.toString);
-            if (key.indexOf(ws) != -1) {
+            console.log('ws name 2 ' + ws.id);
+            if (key.indexOf(ws.id) != -1) {
                 key.splice(1, 1);
                 console.log('delete user ' + key);
             }
