@@ -172,7 +172,7 @@ wss.on('connection', function connection(ws) {
      //           clients[key].send(info);             
       //      }
     });
-    ws.on('close', function () {
+    ws.on('close', function (ws) {
         for (var key in users) {
             console.log('ws ' + ws);
             console.log('ws name ' + ws.name);
