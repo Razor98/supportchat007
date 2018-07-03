@@ -49,7 +49,7 @@ wss.on('connection', function connection(ws) {
             //wss.broadcast('AUTH REF', client => client !== ws);
             try {
             wss.clients.forEach(function each(client) {
-                if (client !== ws && client.readyState == WebSocket.OPEN) {
+                if (client !== ws) {
                     client.send('AUTH REF');
                 }
             });
