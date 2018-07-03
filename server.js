@@ -186,6 +186,15 @@ wss.on('connection', function connection(ws) {
        // }
         console.log('close connection ' + connections);
         connections = connections - 1;
+        try {
+            wss.clients.forEach(function each(client) {
+                if (client !== ws) {
+                    client.send('AUTH REF');
+                }
+            });
+        } catch (err) {
+            console.log('error REF  ' + err);
+        }
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
@@ -193,6 +202,15 @@ wss.on('connection', function connection(ws) {
         console.log('delete user ' + myname);
         connections = connections - 1;
         delete users[myname];
+        try {
+            wss.clients.forEach(function each(client) {
+                if (client !== ws) {
+                    client.send('AUTH REF');
+                }
+            });
+        } catch (err) {
+            console.log('error REF  ' + err);
+        }
         //delete users[name];
     });
     console.log('Connected', ws.url);
