@@ -174,13 +174,13 @@ wss.on('connection', function connection(ws) {
     });
     ws.on('close', function () {
         for (var key in users) {
-            if (key.indexOf(ws.name) != -1) {
+            if (key.indexOf(ws) != -1) {
                 key.splice(1, 1);
                 console.log('delete user ' + key);
             }
             delete key;
         }
-        console.log('close connection ' + connections.values);
+        console.log('close connection ' + connections);
         connections = connections - 1;
         //delete users[ws.eventNames];
     });
