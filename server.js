@@ -10,7 +10,7 @@ const wss = new SocketServer({ server });
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
 var users = [];
-
+var connections = 0;
 
 const COMMANDS = {
     eino: 'non'
@@ -39,12 +39,14 @@ wss.on('connection', function connection(ws) {
     ws.isAlive = true;
     ws.on('pong', heartbeat);
     ws.send('AUTH 0');
-    console.log("new connection " + users.values);
+    connections = connections + 1;
+    console.log("new connection " + connections.values);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
         info = message;
         if (message.indexOf('id=') != -1) {
+            wss.broadcast("AUTH REF", client => client !== ws);
             try {
             var keyname = '';
             var name = message.split('=')[1];
@@ -162,11 +164,20 @@ wss.on('connection', function connection(ws) {
       //      }
     });
     ws.on('close', function () {
-        console.log('close connection ' + users.values);
+        for (var key in users) {
+            if (key.indexOf(ws.name) != -1) {
+                key.splice(1, 1);
+                console.log('delete user ' + key);
+            }
+            delete key;
+        }
+        console.log('close connection ' + connections.values);
+        connections = connections - 1;
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
-       // console.log('error connection, delete user ' + users[name]);
+        console.log('error connection, delete user ' + connections.values);
+        connections = connections - 1;
         //delete users[name];
     });
     console.log('Connected', ws.url);
