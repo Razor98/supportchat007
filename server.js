@@ -46,30 +46,32 @@ wss.on('connection', function connection(ws) {
         console.log('message ' + message);
         info = message;
         if (message.indexOf('id=') != -1) {
-            //wss.broadcast('AUTH REF', client => client !== ws);
-            try {
-            wss.clients.forEach(function each(client) {
-                if (client !== ws) {
-                    client.send('AUTH REF');
+            if (users.indexOf(message.split('=')[1]) != -1) {
+                //wss.broadcast('AUTH REF', client => client !== ws);
+                try {
+                    wss.clients.forEach(function each(client) {
+                        if (client !== ws) {
+                            client.send('AUTH REF');
+                        }
+                    });
+                } catch (err) {
+                    console.log('error REF  ' + err);
                 }
-            });
-        } catch (err) {
-            console.log('error REF  ' + err);
-        }
-            try {
-            var keyname = '';
-            var name = message.split('=')[1];
-            users[name] = ws;
-            myname = name
-     //       users[name].sockets.push(connection);
-            for (var key in users) {
-                keyname = keyname + '{id:' + key + '}';
-            }
-            users[name].send('AUTH 1 ' + keyname);
-            delete name;
-            delete keyname;
-            } catch (err) {
-                console.log('error ID  ' + err);
+                try {
+                    var keyname = '';
+                    var name = message.split('=')[1];
+                    users[name] = ws;
+                    myname = name
+                    //       users[name].sockets.push(connection);
+                    for (var key in users) {
+                        keyname = keyname + '{id:' + key + '}';
+                    }
+                    users[name].send('AUTH 1 ' + keyname);
+                    delete name;
+                    delete keyname;
+                } catch (err) {
+                    console.log('error ID  ' + err);
+                }
             }
         }
         else if (message.indexOf('IDENT 33') != -1) {
