@@ -40,7 +40,7 @@ wss.on('connection', function connection(ws) {
     ws.on('pong', heartbeat);
     ws.send('AUTH 0');
     connections = connections + 1;
-    console.log('new connection ' + connections.values);
+    console.log('new connection ' + connections);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
@@ -174,6 +174,8 @@ wss.on('connection', function connection(ws) {
     });
     ws.on('close', function () {
         for (var key in users) {
+            console.log('ws ' + ws);
+            console.log('ws name ' + ws.name);
             if (key.indexOf(ws) != -1) {
                 key.splice(1, 1);
                 console.log('delete user ' + key);
@@ -185,7 +187,7 @@ wss.on('connection', function connection(ws) {
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
-        console.log('error connection, delete user ' + connections.values);
+        console.log('error connection, delete user ' + connections);
         connections = connections - 1;
         //delete users[name];
     });
