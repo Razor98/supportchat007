@@ -181,6 +181,7 @@ wss.on('connection', function connection(ws) {
       //          console.log('delete user ' + key);
       //      }
         //      delete key;
+        console.log('delete user ' + myname);
         delete users[myname];
        // }
         console.log('close connection ' + connections);
@@ -188,8 +189,10 @@ wss.on('connection', function connection(ws) {
         //delete users[ws.eventNames];
     });
     ws.on('error', function () {
-        console.log('error connection, delete user ' + connections);
+        console.log('error connection ' + connections);
+        console.log('delete user ' + myname);
         connections = connections - 1;
+        delete users[myname];
         //delete users[name];
     });
     console.log('Connected', ws.url);
