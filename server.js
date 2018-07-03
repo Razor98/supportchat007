@@ -181,7 +181,7 @@ wss.on('connection', function connection(ws) {
       //      }
         //      delete key;
         delete users[name];
-        }
+       // }
         console.log('close connection ' + connections);
         connections = connections - 1;
         //delete users[ws.eventNames];
