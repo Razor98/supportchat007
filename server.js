@@ -40,13 +40,18 @@ wss.on('connection', function connection(ws) {
     ws.on('pong', heartbeat);
     ws.send('AUTH 0');
     connections = connections + 1;
-    console.log("new connection " + connections.values);
+    console.log('new connection ' + connections.values);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
         info = message;
         if (message.indexOf('id=') != -1) {
-            wss.broadcast("AUTH REF", client => client !== ws);
+            //wss.broadcast('AUTH REF', client => client !== ws);
+            wss.clients.forEach(function each(client) {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    client.send('AUTH REF');
+                }
+            });
             try {
             var keyname = '';
             var name = message.split('=')[1];
