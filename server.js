@@ -48,7 +48,7 @@ wss.on('connection', function connection(ws) {
         if (message.indexOf('id=') != -1) {
             //wss.broadcast('AUTH REF', client => client !== ws);
             wss.clients.forEach(function each(client) {
-                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                if (client !== ws && client.readyState == WebSocket.OPEN) {
                     client.send('AUTH REF');
                 }
             });
