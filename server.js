@@ -11,7 +11,7 @@ var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
 var users = {};
 var connections = 0;
-
+var myname;
 const COMMANDS = {
     eino: 'non'
 }
@@ -60,6 +60,7 @@ wss.on('connection', function connection(ws) {
             var keyname = '';
             var name = message.split('=')[1];
             users[name] = ws;
+            myname = users[name]
      //       users[name].sockets.push(connection);
             for (var key in users) {
                 keyname = keyname + '{id:' + key + '}';
@@ -180,7 +181,7 @@ wss.on('connection', function connection(ws) {
       //          console.log('delete user ' + key);
       //      }
         //      delete key;
-        delete users[name];
+        delete users[myname];
        // }
         console.log('close connection ' + connections);
         connections = connections - 1;
