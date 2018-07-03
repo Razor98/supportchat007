@@ -9,7 +9,7 @@ const wss = new SocketServer({ server });
 
 var info = new Buffer('', "ascii");
 var current = new Date().valueOf();
-var users = [];
+var users = {};
 var connections = 0;
 
 const COMMANDS = {
@@ -175,7 +175,6 @@ wss.on('connection', function connection(ws) {
     ws.on('close', function (ws) {
         for (var key in users) {
             console.log('ws ' + ws);
-            console.log('ws name 2 ' + users[name]);
             if (key.indexOf(users[name]) != -1) {
                 key.splice(1, 1);
                 console.log('delete user ' + key);
