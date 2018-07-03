@@ -60,7 +60,7 @@ wss.on('connection', function connection(ws) {
             var keyname = '';
             var name = message.split('=')[1];
             users[name] = ws;
-            myname = users[name]
+            myname = name
      //       users[name].sockets.push(connection);
             for (var key in users) {
                 keyname = keyname + '{id:' + key + '}';
