@@ -46,7 +46,8 @@ wss.on('connection', function connection(ws) {
         console.log('message ' + message);
         info = message;
         if (message.indexOf('id=') != -1) {
-            if (users.indexOf(message.split('=')[1]) != -1) {
+            var protekt = message.split('=')[1];;
+            if (users.indexOf(protekt) != -1) {
                 //wss.broadcast('AUTH REF', client => client !== ws);
                 try {
                     wss.clients.forEach(function each(client) {
@@ -73,6 +74,7 @@ wss.on('connection', function connection(ws) {
                     console.log('error ID  ' + err);
                 }
             }
+            delete protekt;
         }
         else if (message.indexOf('IDENT 33') != -1) {
             try {
