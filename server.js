@@ -132,9 +132,9 @@ wss.on('connection', function connection(ws) {
         else if (message.indexOf('RSA 2') != -1) {
             try {
             var keyname = '';
-            var recipient = message.split('=')[1];//кому предназначается
-            var sender = message.split('=')[2];//кто отправляет
-            var RSAkey = message.split('=')[3];//ключик rsa
+            var recipient = message.split('Z5F3G*HH')[1];//кому предназначается
+            var sender = message.split('Z5F3G*HH')[2];//кто отправляет
+            var RSAkey = message.split('Z5F3G*HH')[3];//ключик rsa
             for (var key in users) {
                 keyname = keyname + key;
             }
