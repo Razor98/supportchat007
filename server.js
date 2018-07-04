@@ -25,6 +25,17 @@ const interval = setInterval(function ping() {
         if (ws.isAlive === false) {
             console.log('delete user ' + myname);
             delete users[myname];
+            console.log('del close connection ' + connections);
+            connections = connections - 1;
+            try {
+                wss.clients.forEach(function each(client) {
+                    if (client !== ws) {
+                        client.send('AUTH DEL_USER {' + myname + '}');
+                    }
+                });
+            } catch (err) {
+                console.log('error REF  ' + err);
+            }
             return ws.terminate();
         }
 
