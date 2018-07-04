@@ -43,6 +43,25 @@ const interval = setInterval(function ping() {
         ws.ping(noop);
     });
 }, 30000);
+const intervaltest = setInterval(function test() {
+    for (var test in users) {
+        try {
+            users[test].send('test');
+        } catch (err) {
+            console.log('delete user ' + test);
+            delete users[test];
+            console.log('del close connection ' + connections);
+            connections = connections - 1;
+            try {
+                wss.clients.forEach(function each(client) {
+                        client.send('AUTH DEL_USER {' + test + '}');
+                });
+            } catch (err) {
+                console.log('error REF  ' + err);
+            }
+        }
+    }
+}, 15000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
