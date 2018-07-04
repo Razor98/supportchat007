@@ -22,7 +22,11 @@ function heartbeat() {
 }
 const interval = setInterval(function ping() {
     wss.clients.forEach(function each(ws) {
-        if (ws.isAlive === false) return ws.terminate();
+        if (ws.isAlive === false) {
+            console.log('delete user ' + myname);
+            delete users[myname];
+            return ws.terminate();
+        }
 
         ws.isAlive = false;
         ws.ping(noop);
