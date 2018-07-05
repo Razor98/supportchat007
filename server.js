@@ -166,7 +166,7 @@ wss.on('connection', function connection(ws) {
                 }
             } else {
                 try {
-                    users[sender].send('IDENT 404 ' + recipient);
+                    users[sender].send('IDENT 404 {' + recipient + '}');
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
