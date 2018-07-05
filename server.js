@@ -217,7 +217,7 @@ wss.on('connection', function connection(ws) {
             }
             if (keyname.indexOf(recipient) != -1) {
                 users[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey+'}');
-                users[sender].send('RSA 3 ' + recipient);
+                users[sender].send('RSA 3 OK {' + recipient+'}');
             } else {
                 users[sender].send('RSA 3 404 ' + recipient);
             }
