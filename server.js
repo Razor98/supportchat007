@@ -7,7 +7,7 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
 const wss = new SocketServer({ server });
 
-var info = new Buffer('');
+
 var current = new Date().valueOf();
 var users = {};
 var connections = 0;
@@ -142,7 +142,7 @@ wss.on('connection', function connection(ws) {
                 var keyname = '';
                 var recipient = message.split('Z5F3G*HH')[1];
                 var sender = message.split('Z5F3G*HH')[2];
-                info = message.split('Z5F3G*HH')[3];
+                var info = new Buffer(message.split('Z5F3G*HH')[3];);
             } catch (err) {
                 console.log('error IDENT 33 block1 ' + err);
             }
@@ -173,7 +173,7 @@ wss.on('connection', function connection(ws) {
                 }
             delete keyname;
             delete recipient;
-            //delete text;
+            delete info;
             delete sender;
             
         }
