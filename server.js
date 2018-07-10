@@ -57,7 +57,7 @@ const intervaltest = setInterval(function test() {
             }
         }
     }
-}, 30000);
+}, 26000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
