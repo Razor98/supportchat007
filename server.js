@@ -7,7 +7,7 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
 const wss = new SocketServer({ server });
 
-var info = new Buffer('', "ascii");
+var info = new Buffer('');
 var current = new Date().valueOf();
 var users = {};
 var connections = 0;
@@ -74,7 +74,7 @@ wss.on('connection', function connection(ws) {
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
         console.log('message ' + message);
-        info = message;
+        //info = message;
         if (message.indexOf('id=') != -1) {
             var protekt = message.split('=')[1];;
             if (users.length > 0) {
@@ -142,7 +142,7 @@ wss.on('connection', function connection(ws) {
                 var keyname = '';
                 var recipient = message.split('Z5F3G*HH')[1];
                 var sender = message.split('Z5F3G*HH')[2];
-                var text = message.split('Z5F3G*HH')[3];
+                info = message.split('Z5F3G*HH')[3];
             } catch (err) {
                 console.log('error IDENT 33 block1 ' + err);
             }
@@ -155,7 +155,7 @@ wss.on('connection', function connection(ws) {
             }
             if (keyname.indexOf(recipient) != -1) {
                 try {
-                    users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + text + '}');
+                    users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + info + '}');
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
@@ -173,7 +173,7 @@ wss.on('connection', function connection(ws) {
                 }
             delete keyname;
             delete recipient;
-            delete text;
+            //delete text;
             delete sender;
             
         }
