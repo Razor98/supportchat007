@@ -73,7 +73,7 @@ wss.on('connection', function connection(ws) {
     console.log('new connection ' + connections);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
-        console.log('message ' + message);
+       // console.log('message ' + message);
         //info = message;
         if (message.indexOf('id=') != -1) {
             var protekt = message.split('=')[1];;
