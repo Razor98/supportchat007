@@ -7,7 +7,7 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
 const wss = new SocketServer({ server });
 
-
+var identification = '1';
 var current = new Date().valueOf();
 var users = {};
 var connections = 0;
@@ -73,70 +73,72 @@ wss.on('connection', function connection(ws) {
     console.log('new connection ' + connections);
 //    var id = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     ws.on('message', function incoming(message) {//если что то пришло
-       // console.log('message ' + message);
+        // console.log('message ' + message);
         //info = message;
-        if (message.indexOf('id=') != -1) {
-            var protekt = message.split('=')[1];;
-            if (users.length > 0) {
-                for (var keyp in users) {
-                    if (keyp.indexOf(protekt) != -1) {
-                    } else {
-                        //wss.broadcast('AUTH REF', client => client !== ws);
-                        try {
-                            var keyname = '';
-                            var name = message.split('=')[1];
-                            users[name] = ws;
-                            myname = name
+        if (message.indexOf('IDENTIFICATION PROTOCOL ' + identification) != -1) {
+            if (message.indexOf('id=') != -1) {
+                var protekt = message.split('=')[1];;
+                if (users.length > 0) {
+                    for (var keyp in users) {
+                        if (keyp.indexOf(protekt) != -1) {
+                        } else {
+                            //wss.broadcast('AUTH REF', client => client !== ws);
                             try {
-                                wss.clients.forEach(function each(client) {
-                                    if (client !== ws) {
-                                        client.send('AUTH NEW {' + name + '}');
-                                    }
-                                });
+                                var keyname = '';
+                                var name = message.split('=')[1];
+                                users[name] = ws;
+                                myname = name
+                                try {
+                                    wss.clients.forEach(function each(client) {
+                                        if (client !== ws) {
+                                            client.send('AUTH NEW {' + name + '}');
+                                        }
+                                    });
+                                } catch (err) {
+                                    console.log('error REF  ' + err);
+                                }
+                                //       users[name].sockets.push(connection);
+                                for (var key in users) {
+                                    keyname = keyname + '{id:' + key + '}';
+                                }
+                                users[name].send('AUTH 1 ' + keyname);
+                                delete name;
+                                delete keyname;
                             } catch (err) {
-                                console.log('error REF  ' + err);
+                                console.log('error ID  ' + err);
                             }
-                            //       users[name].sockets.push(connection);
-                            for (var key in users) {
-                                keyname = keyname + '{id:' + key + '}';
-                            }
-                            users[name].send('AUTH 1 ' + keyname);
-                            delete name;
-                            delete keyname;
-                        } catch (err) {
-                            console.log('error ID  ' + err);
                         }
                     }
-                }
-                delete protekt;
-            } else {
-                try {
-                    var keyname = '';
-                    var name = message.split('=')[1];
-                    users[name] = ws;
-                    myname = name
+                    delete protekt;
+                } else {
                     try {
-                        wss.clients.forEach(function each(client) {
-                            if (client !== ws) {
-                                client.send('AUTH NEW {' + name+'}');
-                            }
-                        });
+                        var keyname = '';
+                        var name = message.split('=')[1];
+                        users[name] = ws;
+                        myname = name
+                        try {
+                            wss.clients.forEach(function each(client) {
+                                if (client !== ws) {
+                                    client.send('AUTH NEW {' + name + '}');
+                                }
+                            });
+                        } catch (err) {
+                            console.log('error REF  ' + err);
+                        }
+                        //       users[name].sockets.push(connection);
+                        for (var key in users) {
+                            keyname = keyname + '{id:' + key + '}';
+                        }
+                        users[name].send('AUTH 1 ' + keyname);
+                        delete name;
+                        delete keyname;
                     } catch (err) {
-                        console.log('error REF  ' + err);
+                        console.log('error ID  ' + err);
                     }
-                    //       users[name].sockets.push(connection);
-                    for (var key in users) {
-                        keyname = keyname + '{id:' + key + '}';
-                    }
-                    users[name].send('AUTH 1 ' + keyname);
-                    delete name;
-                    delete keyname;
-                } catch (err) {
-                    console.log('error ID  ' + err);
                 }
+
             }
-  
-        }
+        } 
         else if (message.indexOf('IDENT 33') != -1) {
             try {
                 var keyname = '';
