@@ -142,7 +142,7 @@ wss.on('connection', function connection(ws) {
                 var keyname = '';
                 var recipient = message.split('Z5F3G*HH')[1];
                 var sender = message.split('Z5F3G*HH')[2];
-                var info = new Buffer(message.split('Z5F3G*HH')[3];);
+                var info = new Buffer(message.split('Z5F3G*HH')[3]);
             } catch (err) {
                 console.log('error IDENT 33 block1 ' + err);
             }
