@@ -86,12 +86,13 @@ wss.on('connection', function connection(ws) {
                             try {
                                 var keyname = '';
                                 var name = message.split('=')[1];
+                                var avatar = message.split('=')[3];
                                 users[name] = ws;
                                 myname = name
                                 try {
                                     wss.clients.forEach(function each(client) {
                                         if (client !== ws) {
-                                            client.send('AUTH NEW {' + name + '}');
+                                            client.send('AUTH NEW {' + name + '}' + '{avatar:' + avatar + '}');
                                         }
                                     });
                                 } catch (err) {
@@ -114,12 +115,13 @@ wss.on('connection', function connection(ws) {
                     try {
                         var keyname = '';
                         var name = message.split('=')[1];
+                        var avatar = message.split('=')[3];
                         users[name] = ws;
                         myname = name
                         try {
                             wss.clients.forEach(function each(client) {
                                 if (client !== ws) {
-                                    client.send('AUTH NEW {' + name + '}');
+                                    client.send('AUTH NEW {' + name + '}' + '{avatar:' + avatar + '}');
                                 }
                             });
                         } catch (err) {
