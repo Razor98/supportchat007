@@ -251,9 +251,9 @@ wss.on('connection', function connection(ws) {
             }
         } else if (message.indexOf('SET_AVATAR') != -1) {
             try {
-            var recipient = message.split('=')[2];//кому предназначается
-            var sender = message.split('=')[1];//кто отправляет
-            var avatar = message.split('HHGFRFRR875FFRF')[1];
+                var recipient = message.split('HHGFRFRR875FFRF')[2];//кому предназначается
+            var sender = message.split('HHGFRFRR875FFRF')[1];//кто отправляет
+            var avatar = message.split('HHGFRFRR875FFRF')[3];
             for (var key in users) {
                 keyname = keyname + key;
             }
