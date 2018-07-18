@@ -258,7 +258,8 @@ wss.on('connection', function connection(ws) {
                 keyname = keyname + key;
             }
             if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + 'end_avatar}');//отправляем запрос клиенту на получение аватара другим пользователем
+                console.log('avatar lenght  ' + avatar.length);
+                users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + ':end_avatar}');//отправляем запрос клиенту на получение аватара другим пользователем
                 users[sender].send('SET AVATAR OK {' + recipient + '}');
             } else {
                 users[sender].send('SET AVATAR 404 ' + recipient);
