@@ -231,6 +231,7 @@ wss.on('connection', function connection(ws) {
                 console.log('error RSA 2  ' + err);
             }
         } else if (message.indexOf('GET_AVATAR') != -1) {
+            try {
             var recipient = message.split('=')[2];//кому предназначается
             var sender = message.split('=')[1];//кто отправляет
             for (var key in users) {
@@ -245,7 +246,11 @@ wss.on('connection', function connection(ws) {
             delete keyname;
             delete recipient;
             delete sender;
+            } catch (err) {
+                console.log('error GET AVATAR  ' + err);
+            }
         } else if (message.indexOf('SET_AVATAR') != -1) {
+            try {
             var recipient = message.split('=')[2];//кому предназначается
             var sender = message.split('=')[1];//кто отправляет
             var avatar = message.split('=')[3];
@@ -262,6 +267,9 @@ wss.on('connection', function connection(ws) {
             delete recipient;
             delete sender;
             delete avatar;
+            } catch (err) {
+                console.log('error SET AVATAR  ' + err);
+            }
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
