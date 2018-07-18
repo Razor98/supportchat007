@@ -138,7 +138,7 @@ wss.on('connection', function connection(ws) {
                 }
 
             }
-        } 
+        }
         else if (message.indexOf('IDENT 33') != -1) {
             try {
                 var keyname = '';
@@ -163,7 +163,7 @@ wss.on('connection', function connection(ws) {
                 }
                 try {
                     users[sender].send('IDENT 1 ' + recipient);
-                    } catch (err) {
+                } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
             } else {
@@ -172,64 +172,96 @@ wss.on('connection', function connection(ws) {
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
-                }
+            }
             delete keyname;
             delete recipient;
             delete info;
             delete sender;
-            
+
         }
         else if (message.indexOf('RSA 0') != -1) {
             try {
-            var keyname = '';
-            var recipient = message.split('=')[1];//кому предназначается
-            var sender = message.split('=')[2];//кто отправляет
-            for (var key in users) {
-                keyname = keyname + key;
-            }
-            if (keyname.indexOf(recipient) != -1) {
-                try {
-                    users[recipient].send('RSA 0 {sender:' + sender + '}');
-                } catch (err) {
-                    console.log('error RSA 0 recepient send 01 ' + err);
+                var keyname = '';
+                var recipient = message.split('=')[1];//кому предназначается
+                var sender = message.split('=')[2];//кто отправляет
+                for (var key in users) {
+                    keyname = keyname + key;
                 }
-                try {
-                users[sender].send('RSA 1 ' + recipient);
-                } catch (err) {
-                    console.log('error RSA 0 recepient send 02 ' + err);
+                if (keyname.indexOf(recipient) != -1) {
+                    try {
+                        users[recipient].send('RSA 0 {sender:' + sender + '}');
+                    } catch (err) {
+                        console.log('error RSA 0 recepient send 01 ' + err);
+                    }
+                    try {
+                        users[sender].send('RSA 1 ' + recipient);
+                    } catch (err) {
+                        console.log('error RSA 0 recepient send 02 ' + err);
+                    }
+                } else {
+                    users[sender].send('RSA 0 404 ' + recipient);
                 }
-            } else {
-                users[sender].send('RSA 0 404 ' + recipient);
-            }
-            delete keyname;
-            delete recipient;
-            delete sender;
+                delete keyname;
+                delete recipient;
+                delete sender;
             } catch (err) {
                 console.log('error RSA 0  ' + err);
             }
         }
         else if (message.indexOf('RSA 2') != -1) {
             try {
-            var keyname = '';
-            var recipient = message.split('Z5F3G*HH')[1];//кому предназначается
-            var sender = message.split('Z5F3G*HH')[2];//кто отправляет
-            var RSAkey = message.split('Z5F3G*HH')[3];//ключик rsa
+                var keyname = '';
+                var recipient = message.split('Z5F3G*HH')[1];//кому предназначается
+                var sender = message.split('Z5F3G*HH')[2];//кто отправляет
+                var RSAkey = message.split('Z5F3G*HH')[3];//ключик rsa
+                for (var key in users) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(recipient) != -1) {
+                    users[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey + '}');
+                    users[sender].send('RSA 3 OK {' + recipient + '}');
+                } else {
+                    users[sender].send('RSA 3 404 ' + recipient);
+                }
+                delete keyname;
+                delete recipient;
+                delete sender;
+                delete RSAkey;
+            } catch (err) {
+                console.log('error RSA 2  ' + err);
+            }
+        } else if (message.indexOf('GET_AVATAR') != -1) {
+            var recipient = message.split('=')[2];//кому предназначается
+            var sender = message.split('=')[1];//кто отправляет
             for (var key in users) {
                 keyname = keyname + key;
             }
             if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey+'}');
-                users[sender].send('RSA 3 OK {' + recipient+'}');
+                users[recipient].send('GET_AVATAR {sender:' + sender + '}');//отправляем запрос клиенту на получение аватара другим пользователем
+                users[sender].send('GET AVATAR OK {' + recipient + '}');
             } else {
-                users[sender].send('RSA 3 404 ' + recipient);
+                users[sender].send('GET AVATAR 404 ' + recipient);
             }
             delete keyname;
             delete recipient;
             delete sender;
-            delete RSAkey;
-            } catch (err) {
-                console.log('error RSA 2  ' + err);
+        } else if (message.indexOf('SET_AVATAR') != -1) {
+            var recipient = message.split('=')[2];//кому предназначается
+            var sender = message.split('=')[1];//кто отправляет
+            var avatar = message.split('=')[3];
+            for (var key in users) {
+                keyname = keyname + key;
             }
+            if (keyname.indexOf(recipient) != -1) {
+                users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + 'end_avatar}');//отправляем запрос клиенту на получение аватара другим пользователем
+                users[sender].send('SET AVATAR OK {' + recipient + '}');
+            } else {
+                users[sender].send('SET AVATAR 404 ' + recipient);
+            }
+            delete keyname;
+            delete recipient;
+            delete sender;
+            delete avatar;
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
