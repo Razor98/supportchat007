@@ -253,12 +253,11 @@ wss.on('connection', function connection(ws) {
             try {
             var recipient = message.split('=')[2];//кому предназначается
             var sender = message.split('=')[1];//кто отправляет
-            var avatar = message.split('=')[3];
+            var avatar = message.split('HHGFRFRR875FFRF')[1];
             for (var key in users) {
                 keyname = keyname + key;
             }
             if (keyname.indexOf(recipient) != -1) {
-                console.log('avatar lenght  ' + avatar.length);
                 users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + ':end_avatar}');//отправляем запрос клиенту на получение аватара другим пользователем
                 users[sender].send('SET AVATAR OK {' + recipient + '}');
             } else {
