@@ -10,6 +10,7 @@ const wss = new SocketServer({ server });
 var identification = '1';
 var current = new Date().valueOf();
 var users = {};
+var chats = {};
 var connections = 0;
 var myname;
 const COMMANDS = {
@@ -149,7 +150,7 @@ wss.on('connection', function connection(ws) {
                 console.log('error IDENT 33 block1 ' + err);
             }
             try {
-                for (var key in users) {
+                for (var key in chats) {
                     keyname = keyname + key;
                 }
             } catch (err) {
@@ -157,18 +158,18 @@ wss.on('connection', function connection(ws) {
             }
             if (keyname.indexOf(recipient) != -1) {
                 try {
-                    users[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + info + '}');
+                    chats[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + info + '}');
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
                 try {
-                    users[sender].send('IDENT 1 ' + recipient);
+                    chats[sender].send('IDENT 1 ' + recipient);
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
             } else {
                 try {
-                    users[sender].send('IDENT 404 {' + recipient + '}');
+                    chats[sender].send('IDENT 404 {' + recipient + '}');
                 } catch (err) {
                     console.log('error IDENT 33 block3 ' + err);
                 }
@@ -184,22 +185,22 @@ wss.on('connection', function connection(ws) {
                 var keyname = '';
                 var recipient = message.split('=')[1];//кому предназначаетс€
                 var sender = message.split('=')[2];//кто отправл€ет
-                for (var key in users) {
+                for (var key in chats) {
                     keyname = keyname + key;
                 }
                 if (keyname.indexOf(recipient) != -1) {
                     try {
-                        users[recipient].send('RSA 0 {sender:' + sender + '}');
+                        chats[recipient].send('RSA 0 {sender:' + sender + '}');
                     } catch (err) {
                         console.log('error RSA 0 recepient send 01 ' + err);
                     }
                     try {
-                        users[sender].send('RSA 1 ' + recipient);
+                        chats[sender].send('RSA 1 ' + recipient);
                     } catch (err) {
                         console.log('error RSA 0 recepient send 02 ' + err);
                     }
                 } else {
-                    users[sender].send('RSA 0 404 ' + recipient);
+                    chats[sender].send('RSA 0 404 ' + recipient);
                 }
                 delete keyname;
                 delete recipient;
@@ -214,14 +215,14 @@ wss.on('connection', function connection(ws) {
                 var recipient = message.split('Z5F3G*HH')[1];//кому предназначаетс€
                 var sender = message.split('Z5F3G*HH')[2];//кто отправл€ет
                 var RSAkey = message.split('Z5F3G*HH')[3];//ключик rsa
-                for (var key in users) {
+                for (var key in chats) {
                     keyname = keyname + key;
                 }
                 if (keyname.indexOf(recipient) != -1) {
-                    users[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey + '}');
-                    users[sender].send('RSA 3 OK {' + recipient + '}');
+                    chats[recipient].send('RSA 2 {sender:' + sender + '}' + '{RSAkey:' + RSAkey + '}');
+                    chats[sender].send('RSA 3 OK {' + recipient + '}');
                 } else {
-                    users[sender].send('RSA 3 404 ' + recipient);
+                    chats[sender].send('RSA 3 404 ' + recipient);
                 }
                 delete keyname;
                 delete recipient;
@@ -232,44 +233,48 @@ wss.on('connection', function connection(ws) {
             }
         } else if (message.indexOf('GET_AVATAR') != -1) {
             try {
-            var recipient = message.split('=')[2];//кому предназначаетс€
-            var sender = message.split('=')[1];//кто отправл€ет
-            for (var key in users) {
-                keyname = keyname + key;
-            }
-            if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('GET_AVATAR {sender:' + sender + '}');//отправл€ем запрос клиенту на получение аватара другим пользователем
-                users[sender].send('GET AVATAR OK {' + recipient + '}');
-            } else {
-                users[sender].send('GET AVATAR 404 ' + recipient);
-            }
-            delete keyname;
-            delete recipient;
-            delete sender;
+                var recipient = message.split('=')[2];//кому предназначаетс€
+                var sender = message.split('=')[1];//кто отправл€ет
+                for (var key in users) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(recipient) != -1) {
+                    users[recipient].send('GET_AVATAR {sender:' + sender + '}');//отправл€ем запрос клиенту на получение аватара другим пользователем
+                    users[sender].send('GET AVATAR OK {' + recipient + '}');
+                } else {
+                    users[sender].send('GET AVATAR 404 ' + recipient);
+                }
+                delete keyname;
+                delete recipient;
+                delete sender;
             } catch (err) {
                 console.log('error GET AVATAR  ' + err);
             }
         } else if (message.indexOf('SET_AVATAR') != -1) {
             try {
                 var recipient = message.split('HHGFRFRR875FFRF')[2];//кому предназначаетс€
-            var sender = message.split('HHGFRFRR875FFRF')[1];//кто отправл€ет
-            var avatar = message.split('HHGFRFRR875FFRF')[3];
-            for (var key in users) {
-                keyname = keyname + key;
-            }
-            if (keyname.indexOf(recipient) != -1) {
-                users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + ':end_avatar}');//отправл€ем запрос клиенту на получение аватара другим пользователем
-                users[sender].send('SET AVATAR OK {' + recipient + '}');
-            } else {
-                users[sender].send('SET AVATAR 404 ' + recipient);
-            }
-            delete keyname;
-            delete recipient;
-            delete sender;
-            delete avatar;
+                var sender = message.split('HHGFRFRR875FFRF')[1];//кто отправл€ет
+                var avatar = message.split('HHGFRFRR875FFRF')[3];
+                for (var key in users) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(recipient) != -1) {
+                    users[recipient].send('SET_AVATAR {sender:' + sender + '}{avatar:' + avatar + ':end_avatar}');//отправл€ем запрос клиенту на получение аватара другим пользователем
+                    users[sender].send('SET AVATAR OK {' + recipient + '}');
+                } else {
+                    users[sender].send('SET AVATAR 404 ' + recipient);
+                }
+                delete keyname;
+                delete recipient;
+                delete sender;
+                delete avatar;
             } catch (err) {
                 console.log('error SET AVATAR  ' + err);
             }
+        } else if (message.indexOf('chat') != -1) {
+            var name = message.split('=')[1];
+            chats[name] = ws;
+            chats[name].send('chat available');
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
