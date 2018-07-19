@@ -275,6 +275,7 @@ wss.on('connection', function connection(ws) {
             var protekt = message.split('=')[1];
                 for (var keyp in chats) {
                     if (keyp.indexOf(protekt) != -1) {
+                        chats[name].send('chat available');
                     } else {
                         var name = message.split('=')[1];
                         chats[name] = ws;
