@@ -278,11 +278,11 @@ wss.on('connection', function connection(ws) {
                 keyname = keyname + key;
             }     
             if (keyname.indexOf(protekt) != -1) {
-                        chats[name].send('chat available');
+                chats[protekt].send('chat available');
                     } else {
                         var name = message.split('=')[1];
-                        chats[name] = ws;
-                        chats[name].send('chat available');
+                        chats[protekt] = ws;
+                        chats[protekt].send('chat available');
                     }
             delete protekt;
         } else if (message.indexOf('getdialog') != -1) {
