@@ -273,7 +273,6 @@ wss.on('connection', function connection(ws) {
             }
         } else if (message.indexOf('chat') != -1) {
             var protekt = message.split('=')[1];
-            if (chats.length > 0) {
                 for (var keyp in chats) {
                     if (keyp.indexOf(protekt) != -1) {
                     } else {
@@ -282,14 +281,12 @@ wss.on('connection', function connection(ws) {
                         chats[name].send('chat available');
                     }
                 }
-            }
             delete protekt;
         } else if (message.indexOf('getdialog') != -1) {
             console.log('getdialog  ' + message);
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
             var keyname;
-            if (users.length > 0) {
                 for (var key in users) {
                     keyname = keyname + key;
                 }         
@@ -299,7 +296,6 @@ wss.on('connection', function connection(ws) {
                 } else {
                     users[sender].send('GET_DIALOG_404');
                 }               
-            }
             delete keyname;
             delete sender;
             delete recipient;
