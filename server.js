@@ -47,11 +47,9 @@ const intervaltest = setInterval(function test() {
     for (var test in users) {
         try {
             users[test].send('PING');
-            chats[test].send('PING');
         } catch (err) {
             console.log('delete user bad connect ' + test);
-            delete users[test];
-            delete chats[myname];
+            delete users[test];         
             try {
                 wss.clients.forEach(function each(client) {
                         client.send('AUTH DEL_USER {' + test + '}');
@@ -59,6 +57,14 @@ const intervaltest = setInterval(function test() {
             } catch (err) {
                 console.log('error REF  ' + err);
             }
+        }
+    }
+    for (var testc in chats) {
+        try {
+            chats[testc].send('PING');
+        } catch (err) {
+            console.log('delete chats bad connect ' + testc);
+            delete chats[myname];
         }
     }
 }, 26000);
