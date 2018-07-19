@@ -285,6 +285,7 @@ wss.on('connection', function connection(ws) {
             }
             delete protekt;
         } else if (message.indexOf('getdialog') != -1) {
+            console.log('getdialog  ' + message);
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
             var keyname;
@@ -293,9 +294,11 @@ wss.on('connection', function connection(ws) {
                     keyname = keyname + key;
                 }         
                 if (keyname.indexOf(recipient) != -1) {
-                        users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
-                        users[sender].send('GET_DIALOG_106');
-                    }                
+                    users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
+                    users[sender].send('GET_DIALOG_106');
+                } else {
+                    users[sender].send('GET_DIALOG_404');
+                }               
             }
             delete keyname;
             delete sender;
