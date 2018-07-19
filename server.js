@@ -283,17 +283,23 @@ wss.on('connection', function connection(ws) {
                     }
                 }
             }
+            delete protekt;
         } else if (message.indexOf('getdialog') != -1) {
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
+            var keyname;
             if (users.length > 0) {
-                for (var keyp in users) {
-                    if (keyp.indexOf(recipient) != -1) {
+                for (var key in users) {
+                    keyname = keyname + key;
+                }         
+                if (keyname.indexOf(recipient) != -1) {
                         users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
                         users[sender].send('GET_DIALOG_106');
-                    }
-                }
+                    }                
             }
+            delete keyname;
+            delete sender;
+            delete recipient;
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
