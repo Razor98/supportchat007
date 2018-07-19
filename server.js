@@ -26,6 +26,7 @@ const interval = setInterval(function ping() {
         if (ws.isAlive === false) {
             console.log('delete user ' + myname);
             delete users[myname];
+            delete chats[myname];
             try {
                 wss.clients.forEach(function each(client) {
                     if (client !== ws) {
@@ -46,9 +47,11 @@ const intervaltest = setInterval(function test() {
     for (var test in users) {
         try {
             users[test].send('PING');
+            chats[test].send('PING');
         } catch (err) {
             console.log('delete user bad connect ' + test);
             delete users[test];
+            delete chats[myname];
             try {
                 wss.clients.forEach(function each(client) {
                         client.send('AUTH DEL_USER {' + test + '}');
@@ -326,6 +329,7 @@ wss.on('connection', function connection(ws) {
         //      delete key;
         console.log('delete user ' + myname);
         delete users[myname];
+        delete chats[myname];
        // }
         console.log('close connection ' + connections);
         connections = connections - 1;
@@ -345,6 +349,7 @@ wss.on('connection', function connection(ws) {
         console.log('delete user ' + myname);
         connections = connections - 1;
         delete users[myname];
+        delete chats[myname];
         try {
             wss.clients.forEach(function each(client) {
                 if (client !== ws) {
