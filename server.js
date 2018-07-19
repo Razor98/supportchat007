@@ -272,19 +272,24 @@ wss.on('connection', function connection(ws) {
                 console.log('error SET AVATAR  ' + err);
             }
         } else if (message.indexOf('chat') != -1) {
-            var protekt = message.split('=')[1];
+            var sender = message.split('=')[1];
             var keyname;
-            for (var key in chats) {
-                keyname = keyname + key;
-            }     
-            if (keyname.indexOf(protekt) != -1) {
-                chats[protekt].send('chat available');
-                    } else {
-                        var name = message.split('=')[1];
-                        chats[protekt] = ws;
-                        chats[protekt].send('chat available');
-                    }
-            delete protekt;
+            if (chats.length > 0) {
+                for (var key in chats) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(sender) != -1) {
+                    chats[sender].send('chat available');
+                } else {
+                    chats[sender] = ws;
+                    chats[sender].send('chat available');
+                }
+            } else {
+                chats[sender] = ws;
+                chats[sender].send('chat available');
+            }
+            delete sender;
+            delete keyname;
         } else if (message.indexOf('getdialog') != -1) {
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
