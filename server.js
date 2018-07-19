@@ -272,9 +272,28 @@ wss.on('connection', function connection(ws) {
                 console.log('error SET AVATAR  ' + err);
             }
         } else if (message.indexOf('chat') != -1) {
-            var name = message.split('=')[1];
-            chats[name] = ws;
-            chats[name].send('chat available');
+            var protekt = message.split('=')[1];
+            if (chats.length > 0) {
+                for (var keyp in chats) {
+                    if (keyp.indexOf(protekt) != -1) {
+                    } else {
+                        var name = message.split('=')[1];
+                        chats[name] = ws;
+                        chats[name].send('chat available');
+                    }
+                }
+            }
+        } else if (message.indexOf('getdialog') != -1) {
+            var recipient = message.split('=')[1];
+            var sender = message.split('=')[2];
+            if (users.length > 0) {
+                for (var keyp in users) {
+                    if (keyp.indexOf(recipient) != -1) {
+                        users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
+                        users[sender].send('GET_DIALOG_106');
+                    }
+                }
+            }
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
