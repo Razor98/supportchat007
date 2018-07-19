@@ -273,18 +273,19 @@ wss.on('connection', function connection(ws) {
             }
         } else if (message.indexOf('chat') != -1) {
             var protekt = message.split('=')[1];
-                for (var keyp in chats) {
-                    if (keyp.indexOf(protekt) != -1) {
+            var keyname;
+            for (var key in chats) {
+                keyname = keyname + key;
+            }     
+            if (keyname.indexOf(protekt) != -1) {
                         chats[name].send('chat available');
                     } else {
                         var name = message.split('=')[1];
                         chats[name] = ws;
                         chats[name].send('chat available');
                     }
-                }
             delete protekt;
         } else if (message.indexOf('getdialog') != -1) {
-            console.log('getdialog  ' + message);
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
             var keyname;
