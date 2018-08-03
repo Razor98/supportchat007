@@ -64,7 +64,7 @@ const intervaltest = setInterval(function test() {
             chats[testc].send('PING');
         } catch (err) {
             console.log('delete chats bad connect ' + testc);
-            delete chats[myname];
+            delete chats[testc];
         }
     }
 }, 26000);
