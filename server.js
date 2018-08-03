@@ -169,18 +169,18 @@ wss.on('connection', function connection(ws) {
                 try {
                     chats[recipient].send('IDENT 33 {sender:' + sender + '}{message:' + info + '}');
                 } catch (err) {
-                    console.log('error IDENT 33 block3 ' + err);
+                    console.log('error IDENT 33 block3 1' + err);
                 }
                 try {
                     chats[sender].send('IDENT 1 ' + recipient);
                 } catch (err) {
-                    console.log('error IDENT 33 block3 ' + err);
+                    console.log('error IDENT 33 block3 2' + err);
                 }
             } else {
                 try {
                     chats[sender].send('IDENT 404 {' + recipient + '}');
                 } catch (err) {
-                    console.log('error IDENT 33 block3 ' + err);
+                    console.log('error IDENT 33 block3 3' + err);
                 }
             }
             delete keyname;
