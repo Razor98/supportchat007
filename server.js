@@ -26,7 +26,7 @@ const interval = setInterval(function ping() {
         if (ws.isAlive === false) {
             console.log('delete user ' + myname);
             delete users[myname];
-            delete chats[myname];
+            //delete chats[myname];
             try {
                 wss.clients.forEach(function each(client) {
                     if (client !== ws) {
