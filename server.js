@@ -148,9 +148,9 @@ wss.on('connection', function connection(ws) {
                 }
 
             } else if (message.indexOf('PON5') != -1) {
-                var name = message.split('=')[1];
-                ws[name].send('TIME_IN');
-                delete name;
+               // var name = message.split('=')[1];
+                ws.send('TIME_IN');
+                //delete name;
             }
         }
         else if (message.indexOf('IDENT 33') != -1) {
