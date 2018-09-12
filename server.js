@@ -148,7 +148,7 @@ wss.on('connection', function connection(ws) {
                 }
 
             } else if (message.indexOf('PON5') != -1) {
-               // var name = message.split('=')[1];
+                // var name = message.split('=')[1];
                 ws.send('TIME_IN');
                 //delete name;
             }
@@ -307,15 +307,35 @@ wss.on('connection', function connection(ws) {
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
             var keyname;
-                for (var key in users) {
-                    keyname = keyname + key;
-                }         
-                if (keyname.indexOf(recipient) != -1) {
-                    users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
-                    users[sender].send('GET_DIALOG_106');
-                } else {
-                    users[sender].send('GET_DIALOG_404');
-                }               
+            for (var key in users) {
+                keyname = keyname + key;
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                users[recipient].send('GET_DIALOG_101 {sender:' + sender + '}');
+                users[sender].send('GET_DIALOG_106');
+            } else {
+                users[sender].send('GET_DIALOG_404');
+            }
+            delete keyname;
+            delete sender;
+            delete recipient;
+        }
+        else if (message.indexOf('online_opponent') != -1) {
+            var recipient = message.split('=')[1];
+            var sender = message.split('=')[2];
+            var keyname;
+            for (var key in chats) {
+                keyname = keyname + key;
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                try {
+                    chats[sender].send('Online_OK');
+                } catch (err) {console.log('error online status');}
+            } else {
+                try {
+                    chats[sender].send('Online_null');
+                } catch (err) { console.log('error online status'); }
+            }
             delete keyname;
             delete sender;
             delete recipient;
