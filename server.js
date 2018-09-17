@@ -325,7 +325,7 @@ wss.on('connection', function connection(ws) {
             var sender = message.split('=')[2];
             var keyname;
             var keynameuser;
-            try {
+   
                 for (var key in chats) {
                     keyname = keyname + key;
                 }         
@@ -336,7 +336,7 @@ wss.on('connection', function connection(ws) {
                         chats[sender].send('Online_null');
                         console.log('Online_null');
                 }
-            } catch (err) { 'error online globaly' }
+           
             try {
             for (var krt in users) {
                 keynameuser = keynameuser + krt;
