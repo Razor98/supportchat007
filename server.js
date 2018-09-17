@@ -328,15 +328,7 @@ wss.on('connection', function connection(ws) {
             try {
                 for (var key in chats) {
                     keyname = keyname + key;
-                }
-                for (var krt in users) {
-                    keynameuser = keynameuser + krt;
-                }
-                if (keynameuser.indexOf(recipient) != -1) {
-                    try {
-                        users[recipient].send('NOTIFICATION FOR {' + sender + '}');
-                    } catch (err) { console.log('error online status user'); }
-                }
+                }         
                 if (keyname.indexOf(recipient) != -1) {
                     try {
                         chats[sender].send('Online_OK');
@@ -347,6 +339,16 @@ wss.on('connection', function connection(ws) {
                     } catch (err) { console.log('error online status'); }
                 }
             } catch (err) { 'error online globaly' }
+            try {
+            for (var krt in users) {
+                keynameuser = keynameuser + krt;
+            }    
+            if (keynameuser.indexOf(recipient) != -1) {
+                try {
+                    users[recipient].send('NOTIFICATION FOR {' + sender + '}');
+                    } catch (err) { console.log('error online status user'); }      
+                }
+            } catch (err) { console.log('error online status user globaly'); }  
             delete keynameuser;
             delete keyname;
             delete sender;
