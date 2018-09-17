@@ -323,7 +323,6 @@ wss.on('connection', function connection(ws) {
         else if (message.indexOf('online_opponent') != -1) {
             var recipient = message.split('=')[1];
             var sender = message.split('=')[2];
-            var sender_name = message.split('=')[3];
             var keyname;
             var keynameuser;
             try {
@@ -348,11 +347,10 @@ wss.on('connection', function connection(ws) {
             }    
             if (keynameuser.indexOf(recipient) != -1) {
                 try {
-                    users[recipient].send('NOTIFICATION FOR {' + sender + '_' + sender_name + '}');
+                    users[recipient].send('NOTIFICATION FOR {' + sender + '}');
                     } catch (err) { console.log('error online status user'); }      
                 }
             } catch (err) { console.log('error online status user globaly'); }  
-            delete sender_name;
             delete keynameuser;
             delete keyname;
             delete sender;
