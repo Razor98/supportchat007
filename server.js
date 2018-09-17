@@ -325,6 +325,8 @@ wss.on('connection', function connection(ws) {
             var sender = message.split('=')[2];
             var keyname;
             var keynameuser;
+            var protektion_sender = message.split('=')[3];
+            var protektion_recipient = message.split('=')[4];
             try {
                 for (var key in chats) {
                     keyname = keyname + key;
@@ -341,10 +343,12 @@ wss.on('connection', function connection(ws) {
             }    
             if (keynameuser.indexOf(recipient) != -1) {
                 try {
-                    users[recipient].send('NOTIFICATION FOR {' + sender + '}');
+                    users[recipient + '_' + protektion_recipient].send('NOTIFICATION FOR {' + sender + '_'+ protektion_sender + '}');
                     } catch (err) { console.log('error online status user'); }      
                 }
             } catch (err) { console.log('error online status user globaly'); }  
+            delete protektion_recipient;
+            delete protektion_sender;
             delete keynameuser;
             delete keyname;
             delete sender;
