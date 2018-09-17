@@ -333,7 +333,9 @@ wss.on('connection', function connection(ws) {
                     keynameuser = keynameuser + krt;
                 }
                 if (keynameuser.indexOf(recipient) != -1) {
-                    users[recipient].send('NOTIFICATION FOR {' + sender + '}');
+                    try {
+                        users[recipient].send('NOTIFICATION FOR {' + sender + '}');
+                    } catch (err) { console.log('error online status user'); }
                 }
                 if (keyname.indexOf(recipient) != -1) {
                     try {
