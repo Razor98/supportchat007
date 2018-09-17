@@ -333,10 +333,12 @@ wss.on('connection', function connection(ws) {
                 if (keyname.indexOf(recipient) != -1) {
                     try {
                         chats[sender].send('Online_OK');
+                        console.log('Online_OK');
                     } catch (err) { console.log('error online status01'); }
                 } else {
                     try {
                         chats[sender].send('Online_null');
+                        console.log('Online_null');
                     } catch (err) { console.log('error online status02'); }
                 }
             } catch (err) { 'error online globaly' }
