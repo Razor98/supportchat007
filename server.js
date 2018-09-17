@@ -343,7 +343,7 @@ wss.on('connection', function connection(ws) {
             }    
             if (keynameuser.indexOf(recipient) != -1) {
                 try {
-                    users[recipient + '_' + protektion_recipient].send('NOTIFICATION FOR {' + sender + '}');
+                    users[recipient + '_' + protektion_recipient].send('NOTIFICATION FOR {' + sender + "_" + protektion_sender + '}');
                     } catch (err) { console.log('error online status user'); }      
                 }
             } catch (err) { console.log('error online status user globaly'); }  
