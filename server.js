@@ -11,6 +11,7 @@ var identification = '1';
 var current = new Date().valueOf();
 var users = {};
 var chats = {};
+var mobile = {};
 var connections = 0;
 var myname;
 const COMMANDS = {
@@ -353,6 +354,25 @@ wss.on('connection', function connection(ws) {
             delete keyname;
             delete sender;
             delete recipient;
+        } else if (message.indexOf('mobile=') != -1) {
+            var sender = message.split('=')[1];
+            var keyname;
+            if (mobile.length > 0) {
+                for (var key in mobile) {
+                    keyname = keyname + key;
+                }
+                if (keyname.indexOf(sender) != -1) {
+                    mobile[sender].send('REGISTER OK');
+                } else {
+                    mobile[sender] = ws;
+                    mobile[sender].send('REGISTER OK');
+                }
+            } else {
+                mobile[sender] = ws;
+                mobile[sender].send('REGISTER OK');
+            }
+            delete sender;
+            delete keyname;
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
