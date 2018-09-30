@@ -68,6 +68,14 @@ const intervaltest = setInterval(function test() {
             delete chats[testc];
         }
     }
+    for (var testc in mobile) {
+        try {
+            mobile[testc].send('PING');
+        } catch (err) {
+            console.log('delete mobile bad connect ' + testc);
+            delete mobile[testc];
+        }
+    }
 }, 26000);
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
@@ -365,10 +373,12 @@ wss.on('connection', function connection(ws) {
                     mobile[sender].send('REGISTER OK');
                 } else {
                     mobile[sender] = ws;
+                    myname = sender
                     mobile[sender].send('REGISTER OK');
                 }
             } else {
                 mobile[sender] = ws;
+                myname = sender
                 mobile[sender].send('REGISTER OK');
             }
             delete sender;
@@ -394,6 +404,7 @@ wss.on('connection', function connection(ws) {
         console.log('delete user ' + myname);
         delete users[myname];
         delete chats[myname];
+        delete mobile[myname];
        // }
         console.log('close connection ' + connections);
         connections = connections - 1;
@@ -414,6 +425,7 @@ wss.on('connection', function connection(ws) {
         connections = connections - 1;
         delete users[myname];
         delete chats[myname];
+        delete mobile[myname];
         try {
             wss.clients.forEach(function each(client) {
                 if (client !== ws) {
