@@ -382,10 +382,14 @@ wss.on('connection', function connection(ws) {
                 try {
                     users[recipient].send('MOBILE SMS {sender:' + sender + '}{message:' + info + '}');
                 } catch (err) {
+                    try {
+                        chats[recipient].send('MOBILE SMS {sender:' + sender + '}{message:' + info + '}');
+                    } catch (err) { console.log('err 007' + err); }
                     console.log('error MOBILE block3 1' + err);
                 }
                 try {
                     users[sender].send('IDENT 1 ' + recipient);
+                    chats[sender].send('IDENT 1 ' + recipient);
                 } catch (err) {
                     console.log('error MOBILE block3 2' + err);
                 }
