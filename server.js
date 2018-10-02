@@ -362,27 +362,45 @@ wss.on('connection', function connection(ws) {
             delete keyname;
             delete sender;
             delete recipient;
-        } else if (message.indexOf('mobile=') != -1) {
-            var sender = message.split('=')[1];
-            var keyname;
-            if (mobile.length > 0) {
-                for (var key in mobile) {
+        } else if (message.indexOf('MOBILE SMS') != -1) {
+            try {
+                var keyname = '';
+                var recipient = message.split('Z5F3G*HH')[1];
+                var sender = message.split('Z5F3G*HH')[2];
+                var info = new Buffer(message.split('Z5F3G*HH')[3]);
+            } catch (err) {
+                console.log('error MOBILE block1 ' + err);
+            }
+            try {
+                for (var key in users) {
                     keyname = keyname + key;
                 }
-                if (keyname.indexOf(sender) != -1) {
-                    mobile[sender].send('REGISTER OK');
-                } else {
-                    mobile[sender] = ws;
-                    myname = sender
-                    mobile[sender].send('REGISTER OK');
+            } catch (err) {
+                console.log('errorMOBILE block2 ' + err);
+            }
+            if (keyname.indexOf(recipient) != -1) {
+                try {
+                    users[recipient].send('MOBILE SMS {sender:' + sender + '}{message:' + info + '}');
+                } catch (err) {
+                    console.log('error MOBILE block3 1' + err);
+                }
+                try {
+                    users[sender].send('IDENT 1 ' + recipient);
+                } catch (err) {
+                    console.log('error MOBILE block3 2' + err);
                 }
             } else {
-                mobile[sender] = ws;
-                myname = sender
-                mobile[sender].send('REGISTER OK');
+                try {
+                    users[sender].send('IDENT 404 {' + recipient + '}');
+                } catch (err) {
+                    console.log('error MOBILE block3 3' + err);
+                }
             }
-            delete sender;
             delete keyname;
+            delete recipient;
+            delete info;
+            delete sender;
+
         }
 //        wss.clients.forEach(function each(client) {
 //            if (client !== ws && client.readyState === WebSocket.OPEN) {
